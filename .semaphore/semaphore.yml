@@ -5,7 +5,7 @@ agent:
     type: f1-standard-2
     os_image: ubuntu2204
 blocks:
-  - name: 'Block #1'
+  - name: Build and Push Image
     task:
       jobs:
         - name: 'Job #1'
@@ -19,3 +19,15 @@ blocks:
       secrets:
         - name: kubeconfig
         - name: kuberrrrr
+  - name: Deploy to Kubernetes
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - checkout
+            - cd 1-deployment/
+            - kubectl create namespace "balkan" || true.
+            - kubectl config set-context --current --namespace="balkan"
+            - kubectl apply -f deployment.yml
+            - kubectl apply -f service.yml
+            - kubectl rollout status deployment/kuber
