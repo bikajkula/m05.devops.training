@@ -36,6 +36,9 @@ blocks:
             - kubectl apply -f deployment-canary.yml
             - kubectl apply -f service.yml
             - kubectl get svc flask-app
+      secrets:
+        - name: kubeconfig
+        - name: kuberrrrr
   - name: 'Block #3'
     dependencies: []
     task:
@@ -48,3 +51,6 @@ blocks:
             - docker build -t my-flask-image .
             - docker tag my-flask-image "$DOCKER_USERNAME"/my-flask-image
             - docker push "$DOCKER_USERNAME"/my-flask-image
+      secrets:
+        - name: kubeconfig
+        - name: kuberrrrr
