@@ -25,7 +25,7 @@ blocks:
         - name: 'Job #1'
           commands:
             - checkout
-            - cd 1-deployment/
+            - cd 2-blue-green-deployment/
             - kubectl create namespace "balkan" || true
             - kubectl config set-context --current --namespace="balkan"
             - kubectl apply -f deployment-blue.yml
