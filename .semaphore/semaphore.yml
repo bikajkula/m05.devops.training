@@ -19,14 +19,14 @@ blocks:
       secrets:
         - name: kubeconfig
         - name: kuberrrrr
-  - name: Deploy to Kubernetes
+  - name: Deploy to Kubernetes1
     task:
       jobs:
         - name: 'Job #1'
           commands:
             - checkout
             - cd 1-deployment/
-            - kubectl create namespace "balkan" || true.
+            - kubectl create namespace "balkan" || true
             - kubectl config set-context --current --namespace="balkan"
             - kubectl apply -f deployment.yml
             - kubectl apply -f service.yml
