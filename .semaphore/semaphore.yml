@@ -11,7 +11,7 @@ blocks:
         - name: 'Job #1'
           commands:
             - checkout
-            - cd 1-deployment/
+            - cd 2-blue-green-deployment/
             - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
             - docker build -t my-flask-image .
             - docker tag my-flask-image "$DOCKER_USERNAME"/my-flask-image
