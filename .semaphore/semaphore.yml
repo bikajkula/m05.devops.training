@@ -51,6 +51,7 @@ blocks:
             - kubectl config set-context --current --namespace="balkan"
             - kubectl apply -f deployment-stable.yml
             - kubectl apply -f service.yml
+            - kubectl get pods -A
             - kubectl get svc flask-app
     dependencies:
       - '2222'
