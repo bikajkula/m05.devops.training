@@ -13,9 +13,9 @@ blocks:
             - checkout
             - cd 1-deployment/
             - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
-            - docker build -t kuber .
-            - docker tag kuber "$DOCKER_USERNAME"/kuber
-            - docker push "$DOCKER_USERNAME"/kuber
+            - docker build -t my-flask-image .
+            - docker tag kuber "$DOCKER_USERNAME"/my-flask-image
+            - docker push "$DOCKER_USERNAME"/my-flask-image
       secrets:
         - name: kubeconfig
         - name: kuberrrrr
@@ -30,6 +30,6 @@ blocks:
             - kubectl config set-context --current --namespace="balkan"
             - kubectl apply -f deployment.yml
             - kubectl apply -f service.yml
-            - kubectl rollout status deployment/flask-app
+            - kubectl rollout status deployment/my-flask-image
       secrets:
         - name: kubeconfig
