@@ -1,0 +1,21 @@
+version: v1.0
+name: Initial Pipeline
+agent:
+  machine:
+    type: f1-standard-2
+    os_image: ubuntu2204
+blocks:
+  - name: 'Block #1'
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - checkout
+            - cd 1-deployment/
+            - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
+            - docker build -t kuber .
+            - docker tag kuber "$DOCKER_USERNAME"/kuber
+            - docker push "$DOCKER_USERNAME"/kuber
+      secrets:
+        - name: kubeconfig
+        - name: kuberrrrr
