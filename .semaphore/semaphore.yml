@@ -30,6 +30,6 @@ blocks:
             - kubectl config set-context --current --namespace="balkan"
             - kubectl apply -f deployment.yml
             - kubectl apply -f service.yml
-            - kubectl rollout status deployment/my-flask-image
+            - kubectl rollout status deployment/flask-app
       secrets:
         - name: kubeconfig
