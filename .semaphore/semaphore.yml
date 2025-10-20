@@ -11,7 +11,7 @@ blocks:
         - name: 'Job #1'
           commands:
             - checkout
-            - cd 2-blue-green-deployment/
+            - cd 3-canary-deployment/
             - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
             - docker build -t my-flask-image .
             - docker tag my-flask-image "$DOCKER_USERNAME"/my-flask-image
@@ -20,18 +20,18 @@ blocks:
         - name: kubeconfig
         - name: kuberrrrr
     dependencies: []
-  - name: Green
+  - name: '2222'
     task:
       jobs:
         - name: 'Job #1'
           commands:
             - checkout
-            - cd 2-blue-green-deployment/
+            - cd 3-canary-deployment/
             - kubectl create namespace "balkan" || true
             - kubectl config set-context --current --namespace="balkan"
-            - kubectl apply -f deployment-green.yml
-            - kubectl apply -f service-green.yml
-            - kubectl rollout status deployment/flask-app-green
+            - kubectl apply -f deployment-stable.yml
+            - kubectl apply -f service.yml
+            - kubectl rollout status deployment/flask-app-stable
       secrets:
         - name: kubeconfig
         - name: kuberrrrr
@@ -46,39 +46,11 @@ blocks:
         - name: 'Job #1'
           commands:
             - checkout
-            - cd 1-deployment/
+            - cd 3-canary-deployment/
             - kubectl create namespace "balkan" || true
             - kubectl config set-context --current --namespace="balkan"
             - kubectl apply -f deployment.yml
             - kubectl apply -f service.yml
             - kubectl get svc flask-app
     dependencies:
-      - Green
-  - name: Blue
-    dependencies:
-      - Build and Push Image
-    task:
-      jobs:
-        - name: 'Job #1'
-          commands:
-            - checkout
-            - cd 2-blue-green-deployment/
-            - kubectl create namespace "balkan" || true
-            - kubectl config set-context --current --namespace="balkan"
-            - kubectl apply -f deployment-blue.yml
-            - kubectl apply -f service-blue.yml
-            - kubectl rollout status deployment/flask-app-blue
-  - name: Final-blue
-    dependencies:
-      - Blue
-    task:
-      jobs:
-        - name: 'Job #1'
-          commands:
-            - checkout
-            - cd 1-deployment/
-            - kubectl create namespace "balkan" || true
-            - kubectl config set-context --current --namespace="balkan"
-            - kubectl apply -f deployment.yml
-            - kubectl apply -f service.yml
-            - kubectl get svc flask-app
+      - '2222'
