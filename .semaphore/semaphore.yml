@@ -19,7 +19,44 @@ blocks:
       secrets:
         - name: kubeconfig
         - name: kuberrrrr
-  - name: 'Blue '
+    dependencies: []
+  - name: Green
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - checkout
+            - cd 2-blue-green-deployment/
+            - kubectl create namespace "balkan" || true
+            - kubectl config set-context --current --namespace="balkan"
+            - kubectl apply -f deployment-green.yml
+            - kubectl apply -f service-green.yml
+            - kubectl rollout status deployment/flask-app-green
+      secrets:
+        - name: kubeconfig
+        - name: kuberrrrr
+    dependencies:
+      - Build and Push Image
+  - name: Final-green
+    task:
+      secrets:
+        - name: kubeconfig
+        - name: kuberrrrr
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - checkout
+            - cd 1-deployment/
+            - kubectl create namespace "balkan" || true
+            - kubectl config set-context --current --namespace="balkan"
+            - kubectl apply -f deployment.yml
+            - kubectl apply -f service.yml
+            - kubectl get svc flask-app
+    dependencies:
+      - Green
+  - name: Blue
+    dependencies:
+      - Build and Push Image
     task:
       jobs:
         - name: 'Job #1'
@@ -31,14 +68,10 @@ blocks:
             - kubectl apply -f deployment-blue.yml
             - kubectl apply -f service-blue.yml
             - kubectl rollout status deployment/flask-app-blue
-      secrets:
-        - name: kubeconfig
-        - name: kuberrrrr
-  - name: 'Block #3'
+  - name: Final-blue
+    dependencies:
+      - Blue
     task:
-      secrets:
-        - name: kubeconfig
-        - name: kuberrrrr
       jobs:
         - name: 'Job #1'
           commands:
