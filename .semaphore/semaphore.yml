@@ -35,3 +35,18 @@ blocks:
             - kubectl rollout status deployment/flask-app
       secrets:
         - name: kubeconfig
+  - name: 'Block #3'
+    task:
+      secrets:
+        - name: kubeconfig
+        - name: kuberrrrr
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - checkout
+            - cd 1-deployment/
+            - kubectl create namespace "balkan" || true
+            - kubectl config set-context --current --namespace="balkan"
+            - kubectl apply -f deployment.yml
+            - kubectl apply -f service.yml
+            - kubectl get svc flask-app
