@@ -26,10 +26,10 @@ blocks:
           commands:
             - checkout
             - cd 1-deployment/
-            - kubectl create namespace "balkan" || true
+            - kubectl create namespace "balkan" || true.
             - kubectl config set-context --current --namespace="balkan"
             - kubectl apply -f deployment.yml
             - kubectl apply -f service.yml
-            - kubectl rollout status deployment/kuber
+            - kubectl rollout status deployment/flask-app
       secrets:
         - name: kubeconfig
