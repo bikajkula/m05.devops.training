@@ -37,7 +37,7 @@ blocks:
         - name: kuberrrrr
     dependencies:
       - Build and Push Image
-  - name: Final-green
+  - name: '3333'
     task:
       secrets:
         - name: kubeconfig
@@ -49,8 +49,11 @@ blocks:
             - cd 3-canary-deployment/
             - kubectl create namespace "balkan" || true
             - kubectl config set-context --current --namespace="balkan"
-            - kubectl apply -f deployment.yml
+            - kubectl apply -f deployment-stable.yml
             - kubectl apply -f service.yml
             - kubectl get svc flask-app
     dependencies:
       - '2222'
+promotions:
+  - name: Promotion 1
+    pipeline_file: pipeline_2.yml

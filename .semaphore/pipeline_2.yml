@@ -1,0 +1,50 @@
+version: v1.0
+name: Pipeline 2
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+blocks:
+  - name: 'Block #1'
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - checkout
+            - cd 3-canary-deployment/
+            - kubectl create namespace "balkan" || true
+            - kubectl config set-context --current --namespace="balkan"
+            - kubectl apply -f deployment-canary.yml
+            - kubectl apply -f service.yml
+            - kubectl rollout status deployment/flask-app-canary
+      secrets:
+        - name: kubeconfig
+        - name: kuberrrrr
+    dependencies:
+      - 'Block #3'
+  - name: 'Block #2'
+    dependencies:
+      - 'Block #1'
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - checkout
+            - cd 3-canary-deployment/
+            - kubectl create namespace "balkan" || true
+            - kubectl config set-context --current --namespace="balkan"
+            - kubectl apply -f deployment-canary.yml
+            - kubectl apply -f service.yml
+            - kubectl get svc flask-app
+  - name: 'Block #3'
+    dependencies: []
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - checkout
+            - cd 3-canary-deployment/
+            - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
+            - docker build -t my-flask-image .
+            - docker tag my-flask-image "$DOCKER_USERNAME"/my-flask-image
+            - docker push "$DOCKER_USERNAME"/my-flask-image
