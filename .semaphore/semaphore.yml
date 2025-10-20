@@ -33,6 +33,7 @@ blocks:
             - kubectl rollout status deployment/flask-app-blue
       secrets:
         - name: kubeconfig
+        - name: kuberrrrr
   - name: 'Block #3'
     task:
       secrets:
